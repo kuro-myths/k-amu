@@ -61,6 +61,15 @@
 
             <hr>
 
+            <!-- TEST ACCOUNT INFO -->
+            <div class="alert alert-info alert-sm mb-3">
+                <strong>Akun Test:</strong><br>
+                <small>
+                    Email: <code>superadmin@k-amu.test</code><br>
+                    Password: <code>password</code>
+                </small>
+            </div>
+
             <!-- SOCIAL LOGIN ICON ONLY -->
             <div class="d-flex justify-content-center gap-3">
                 <a href="/auth/google" class="btn btn-outline-danger">

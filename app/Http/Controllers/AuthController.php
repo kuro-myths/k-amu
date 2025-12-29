@@ -24,13 +24,25 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/dashboard');
+
+            // Redirect berdasarkan role
+            $user = Auth::user();
+            if ($user->role === 'superadmin') {
+                return redirect()->route('superadmin.beranda');
+            } elseif ($user->role === 'mastercard') {
+                return redirect()->route('mastercard.beranda');
+            } elseif ($user->role === 'leader') {
+                return redirect()->route('leader.beranda');
+            } elseif ($user->role === 'tester') {
+                return redirect()->route('tester.beranda');
+            } else {
+                // user role
+                return redirect()->route('user.beranda');
+            }
         }
 
         return back()->with('error', 'Email atau password salah');
-    }
-
-    // ===== REGISTER =====
+    }    // ===== REGISTER =====
     public function register()
     {
         return view('auth.register');
@@ -48,6 +60,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user',
+            'user_type' => 'siswa',
         ]);
 
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat, silakan login');
@@ -60,6 +74,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('login')->with('success', 'Anda berhasil logout');
     }
 }
