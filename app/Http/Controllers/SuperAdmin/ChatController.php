@@ -25,11 +25,18 @@ class ChatController extends Controller
     public function send(Request $request): RedirectResponse
     {
         $validated = $request->validate([
+            'recipient_id' => 'required|exists:users,id|different:sender_id',
             'content' => 'required|string|max:1000',
+        ], [
+            'recipient_id.required' => 'Penerima pesan harus dipilih',
+            'recipient_id.different' => 'Tidak dapat mengirim pesan ke diri sendiri',
+            'content.required' => 'Isi pesan tidak boleh kosong',
+            'content.max' => 'Pesan maksimal 1000 karakter',
         ]);
 
         Message::create([
             'sender_id' => auth()->id(),
+            'recipient_id' => $validated['recipient_id'],
             'content' => $validated['content'],
             'type' => 'text',
         ]);

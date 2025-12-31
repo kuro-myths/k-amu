@@ -82,4 +82,20 @@ class NoteController extends Controller
 
         return redirect()->route('superadmin.catatan')->with('success', 'Catatan berhasil dihapus');
     }
+
+    public function pin(Note $note): \Illuminate\Http\RedirectResponse
+    {
+        $this->authorize('update', $note);
+        $note->update(['is_pinned' => true]);
+
+        return back()->with('success', 'Catatan berhasil dikunci');
+    }
+
+    public function unpin(Note $note): \Illuminate\Http\RedirectResponse
+    {
+        $this->authorize('update', $note);
+        $note->update(['is_pinned' => false]);
+
+        return back()->with('success', 'Catatan berhasil dibuka');
+    }
 }

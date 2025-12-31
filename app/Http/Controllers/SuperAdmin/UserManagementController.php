@@ -91,4 +91,45 @@ class UserManagementController extends Controller
         $logs = \App\Models\ActivityLog::with('user')->latest()->paginate(20);
         return view('superadmin.manajemen.catatan_aktivitas', ['logs' => $logs]);
     }
+
+    public function proyek(): View
+    {
+        $projects = \App\Models\Project::with('user')
+            ->when(request('search'), function ($query) {
+                $query->where('name', 'like', '%' . request('search') . '%')
+                    ->orWhere('description', 'like', '%' . request('search') . '%');
+            })
+            ->latest()
+            ->paginate(15);
+
+        return view('superadmin.manajemen.proyek', ['projects' => $projects]);
+    }
+
+    public function laporanBug(): View
+    {
+        $bugs = \App\Models\BugReport::with(['user', 'project'])
+            ->when(request('status'), function ($query) {
+                $query->where('status', request('status'));
+            })
+            ->when(request('search'), function ($query) {
+                $query->where('title', 'like', '%' . request('search') . '%')
+                    ->orWhere('description', 'like', '%' . request('search') . '%');
+            })
+            ->latest()
+            ->paginate(15);
+
+        return view('superadmin.manajemen.laporan_bug', ['bugs' => $bugs]);
+    }
+
+    public function hasilTesting(): View
+    {
+        $results = \App\Models\TestResult::with(['tester', 'project'])
+            ->when(request('status'), function ($query) {
+                $query->where('status', request('status'));
+            })
+            ->latest()
+            ->paginate(15);
+
+        return view('superadmin.manajemen.hasil_testing', ['results' => $results]);
+    }
 }
