@@ -15,12 +15,11 @@ class ProjectSeeder extends Seeder
     {
         $leaders = User::where('role', 'leader')->get();
         $testers = User::where('role', 'tester')->pluck('id')->toArray();
-        $developers = User::where('role', '!=', 'superadmin')
-            ->where('role', '!=', 'mastercard')
-            ->where('role', '!=', 'leader')
-            ->limit(6)
-            ->pluck('id')
-            ->toArray();
+        $students = User::where('role', 'user')->where('user_type', 'siswa')->pluck('id')->toArray();
+
+        if ($leaders->isEmpty()) {
+            return; // Exit if no leaders
+        }
 
         $projectStatuses = ['planning', 'in_progress', 'completed', 'on_hold'];
         $i = 0;
@@ -29,11 +28,14 @@ class ProjectSeeder extends Seeder
             // Project 1 for this leader
             Project::create([
                 'leader_id' => $leader->id,
-                'name' => 'Sistem Informasi Akademik ' . ($i + 1),
+                'name' => 'Sistem K-AMU - Phase ' . ($i + 1),
                 'description' => 'Mengembangkan sistem informasi akademik yang terintegrasi dengan portal siswa dan orang tua untuk memudahkan proses monitoring nilai dan kehadiran.',
                 'status' => $projectStatuses[$i % 4],
-                'progress' => ($i % 4 === 0 ? 0 : ($i % 4 === 1 ? 65 : ($i % 4 === 2 ? 100 : 30))),
-                'team_members' => json_encode(array_slice($developers, 0, 3)),
+                'progress' => ($i % 4 === 0 ? 0 : ($i % 4 === 1 ? 75 : ($i % 4 === 2 ? 100 : 30))),
+                'team_members' => json_encode(array_merge(
+                    [$testers[$i % count($testers)] ?? null],
+                    array_slice($students, 0, 2)
+                )),
                 'start_date' => now()->subMonths(6 - $i),
                 'end_date' => now()->addMonths(6 - $i),
             ]);
@@ -41,11 +43,14 @@ class ProjectSeeder extends Seeder
             // Project 2 for this leader
             Project::create([
                 'leader_id' => $leader->id,
-                'name' => 'Platform E-Learning ' . ($i + 1),
+                'name' => 'Platform E-Learning - ' . ($i + 1),
                 'description' => 'Membuat platform e-learning interaktif dengan fitur video streaming, kuis online, dan tracking progress siswa secara real-time untuk mendukung pembelajaran jarak jauh.',
                 'status' => $projectStatuses[($i + 1) % 4],
                 'progress' => (($i + 1) % 4 === 0 ? 25 : (($i + 1) % 4 === 1 ? 75 : (($i + 1) % 4 === 2 ? 100 : 45))),
-                'team_members' => json_encode(array_slice($developers, 2, 3)),
+                'team_members' => json_encode(array_merge(
+                    [($testers[($i + 1) % count($testers)] ?? null)],
+                    array_slice($students, 2, 2)
+                )),
                 'start_date' => now()->subMonths(4 - $i),
                 'end_date' => now()->addMonths(8 - $i),
             ]);
@@ -53,11 +58,14 @@ class ProjectSeeder extends Seeder
             // Project 3 for this leader
             Project::create([
                 'leader_id' => $leader->id,
-                'name' => 'Mobile App Presensi ' . ($i + 1),
+                'name' => 'Mobile App - Presensi',
                 'description' => 'Aplikasi mobile untuk sistem presensi digital dengan fitur geolocation dan integrasi dengan sistem akademik untuk meningkatkan akurasi dan efisiensi.',
                 'status' => $projectStatuses[($i + 2) % 4],
                 'progress' => (($i + 2) % 4 === 0 ? 50 : (($i + 2) % 4 === 1 ? 85 : (($i + 2) % 4 === 2 ? 100 : 20))),
-                'team_members' => json_encode(array_slice($developers, 4, 2)),
+                'team_members' => json_encode(array_merge(
+                    [($testers[($i + 2) % count($testers)] ?? null)],
+                    array_slice($students, 4, 1)
+                )),
                 'start_date' => now()->subMonths(3 - $i),
                 'end_date' => now()->addMonths(9 - $i),
             ]);

@@ -4,15 +4,21 @@
 <div class="container-fluid">
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="page-title">Catatan Saya</h2>
-            <p class="text-muted">Kelola catatan dan dokumen pribadi</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="page-title">Catatan</h2>
+            </div>
+            <p class="text-muted">Kelola catatan dan memo</p>
         </div>
     </div>
 
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
     <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Daftar Catatan ({{ $notes->total() }})</h5>
-        </div>
         <div class="card-body">
             @if($notes->count() > 0)
             <div class="table-responsive">
@@ -20,9 +26,9 @@
                     <thead class="table-light">
                         <tr>
                             <th>Judul</th>
+                            <th>Penulis</th>
                             <th>Kategori</th>
                             <th>Dibuat</th>
-                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -34,18 +40,12 @@
                                 <br />
                                 <small class="text-muted">{{ Str::limit($note->content, 50) }}</small>
                             </td>
+                            <td>{{ $note->user->name }}</td>
                             <td><span class="badge bg-secondary">{{ ucfirst($note->category ?? 'General') }}</span></td>
-                            <td><small class="text-muted">{{ $note->created_at->format('d M Y') }}</small></td>
+                            <td><small class="text-muted">{{ $note->created_at->format('d M Y H:i') }}</small></td>
                             <td>
-                                @if($note->is_pinned)
-                                <span class="badge bg-warning">Pinned</span>
-                                @else
-                                <span class="badge bg-light text-dark">Normal</span>
-                                @endif
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-info">Edit</button>
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Lihat</a>
+                                <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
                             </td>
                         </tr>
                         @endforeach
@@ -58,7 +58,7 @@
                 {{ $notes->links() }}
             </nav>
             @else
-            <div class="alert alert-info">
+            <div class="alert alert-info text-center">
                 <p class="mb-0">Belum ada catatan</p>
             </div>
             @endif

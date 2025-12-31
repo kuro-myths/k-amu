@@ -17,7 +17,7 @@ class LeaderController extends Controller
         $user = Auth::user();
         $projects = Project::where('leader_id', $user->id)->count();
         $notes = Note::where('user_id', $user->id)->count();
-        
+
         return view('leader.beranda.index', compact('projects', 'notes'));
     }
 
@@ -28,7 +28,7 @@ class LeaderController extends Controller
     {
         $user = Auth::user();
         $projects = Project::where('leader_id', $user->id)->paginate(10);
-        
+
         return view('leader.proyek.index', compact('projects'));
     }
 
@@ -46,13 +46,16 @@ class LeaderController extends Controller
     public function proyekDetail($id)
     {
         $project = Project::findOrFail($id);
-        
+
         // Check if user is the project leader
         if ($project->leader_id !== Auth::id()) {
             abort(403, 'Unauthorized');
         }
-        
-        return view('leader.proyek.detail', compact('project'));
+
+        $teamMembers = $project->team_members ? json_decode($project->team_members, true) : [];
+        $teamUsers = \App\Models\User::whereIn('id', $teamMembers)->get();
+
+        return view('leader.proyek.detail', compact('project', 'teamUsers'));
     }
 
     /**
@@ -61,7 +64,7 @@ class LeaderController extends Controller
     public function bimbingan()
     {
         $user = Auth::user();
-        
+
         return view('leader.bimbingan.index');
     }
 
@@ -88,7 +91,7 @@ class LeaderController extends Controller
     {
         $user = Auth::user();
         $projects = Project::where('leader_id', $user->id)->get();
-        
+
         return view('leader.analisis.index', compact('projects'));
     }
 
@@ -99,7 +102,7 @@ class LeaderController extends Controller
     {
         $user = Auth::user();
         $notes = Note::where('user_id', $user->id)->paginate(10);
-        
+
         return view('leader.catatan.index', compact('notes'));
     }
 
@@ -117,7 +120,7 @@ class LeaderController extends Controller
     public function profil()
     {
         $user = Auth::user();
-        
+
         return view('leader.profil.index', compact('user'));
     }
 

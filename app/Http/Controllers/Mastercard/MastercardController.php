@@ -19,7 +19,7 @@ class MastercardController extends Controller
         $users = User::where('role', 'user')->count();
         $notes = Note::count();
         $activities = ActivityLog::count();
-        
+
         return view('mastercard.beranda.index', compact('users', 'notes', 'activities'));
     }
 
@@ -29,7 +29,7 @@ class MastercardController extends Controller
     public function manajemenPengguna()
     {
         $users = User::where('role', 'user')->paginate(10);
-        
+
         return view('mastercard.manajemen.pengguna', compact('users'));
     }
 
@@ -39,7 +39,7 @@ class MastercardController extends Controller
     public function manajemenAkun()
     {
         $user = Auth::user();
-        
+
         return view('mastercard.manajemen.akun', compact('user'));
     }
 
@@ -49,8 +49,8 @@ class MastercardController extends Controller
     public function catatan()
     {
         $notes = Note::paginate(10);
-        
-        return view('mastercard.catatan', compact('notes'));
+
+        return view('mastercard.catatan.index', compact('notes'));
     }
 
     /**
@@ -59,7 +59,7 @@ class MastercardController extends Controller
     public function catatanAktivitas()
     {
         $activities = ActivityLog::paginate(10);
-        
+
         return view('mastercard.catatan_aktivitas', compact('activities'));
     }
 
@@ -85,7 +85,7 @@ class MastercardController extends Controller
     public function profil()
     {
         $user = Auth::user();
-        
+
         return view('mastercard.profil.index', compact('user'));
     }
 

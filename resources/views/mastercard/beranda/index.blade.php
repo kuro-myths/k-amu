@@ -1,66 +1,105 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Mastercard - K-AMU')
-@section('page-title', 'Dashboard Mastercard')
-
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Total Pengguna</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['total_users'] }}</p>
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="page-title">Dashboard Mastercard</h2>
+            <p class="text-muted">Selamat datang, {{ Auth::user()->name }}!</p>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Total Pengguna</p>
+                            <h3 class="card-title">{{ $users ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-people text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
             </div>
-            <i class="fas fa-users text-4xl text-blue-500 opacity-20"></i>
         </div>
-    </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Pengguna Aktif (7 hari)</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['active_users'] }}</p>
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Catatan</p>
+                            <h3 class="card-title">{{ $notes ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-file-text text-success" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
             </div>
-            <i class="fas fa-user-check text-4xl text-green-500 opacity-20"></i>
         </div>
-    </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Akun Dibuat Hari Ini</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['total_accounts_created'] }}</p>
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Aktivitas</p>
+                            <h3 class="card-title">{{ $activities ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-graph-up text-info" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
             </div>
-            <i class="fas fa-user-plus text-4xl text-purple-500 opacity-20"></i>
         </div>
-    </div>
-</div>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Fitur Cepat</h3>
-        <div class="space-y-3">
-            <a href="{{ route('mastercard.pengguna') }}" class="block p-4 bg-blue-50 rounded hover:bg-blue-100 transition">
-                <i class="fas fa-users text-blue-600 mr-3"></i>
-                <span class="font-semibold text-gray-800">Lihat Daftar Pengguna</span>
-            </a>
-            <a href="{{ route('mastercard.akun') }}" class="block p-4 bg-green-50 rounded hover:bg-green-100 transition">
-                <i class="fas fa-user-plus text-green-600 mr-3"></i>
-                <span class="font-semibold text-gray-800">Buat Akun Baru</span>
-            </a>
-            <a href="{{ route('mastercard.catatan-aktivitas') }}" class="block p-4 bg-yellow-50 rounded hover:bg-yellow-100 transition">
-                <i class="fas fa-history text-yellow-600 mr-3"></i>
-                <span class="font-semibold text-gray-800">Lihat Aktivitas</span>
-            </a>
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Status</p>
+                            <h3 class="card-title">Aktif</h3>
+                        </div>
+                        <i class="bi bi-check-circle text-warning" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi</h3>
-        <div class="text-sm text-gray-600 space-y-2">
-            <p><span class="font-semibold">Role:</span> Mastercard</p>
-            <p><span class="font-semibold">Hak Akses:</span> Kelola pengguna & akun</p>
-            <p><span class="font-semibold">Tanggal:</span> {{ now()->format('d M Y') }}</p>
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Aksi Cepat</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('mastercard.manajemen.pengguna') }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-people"></i> Kelola Pengguna
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('mastercard.catatan-aktivitas') }}" class="btn btn-outline-info w-100">
+                                <i class="bi bi-journal"></i> Log Aktivitas
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('mastercard.alat') }}" class="btn btn-outline-success w-100">
+                                <i class="bi bi-tools"></i> Tools
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('mastercard.catatan') }}" class="btn btn-outline-warning w-100">
+                                <i class="bi bi-file-text"></i> Catatan
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

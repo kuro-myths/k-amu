@@ -79,10 +79,10 @@
                 <div class="card-body">
                     <p><strong>Email:</strong></p>
                     <p><a href="mailto:support@k-amu.com">support@k-amu.com</a></p>
-                    
+
                     <p class="mt-3"><strong>Telepon:</strong></p>
                     <p>+62-xxx-xxxx-xxxx</p>
-                    
+
                     <p class="mt-3"><strong>Jam Kerja:</strong></p>
                     <p>Senin - Jumat, 08:00 - 17:00</p>
                 </div>

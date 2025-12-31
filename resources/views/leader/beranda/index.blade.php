@@ -1,75 +1,134 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Leader - K-AMU')
-@section('page-title', 'Dashboard Leader')
-
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Total Proyek</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['total_projects'] }}</p>
-            </div>
-            <i class="fas fa-briefcase text-4xl text-blue-500 opacity-20"></i>
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="page-title">Dashboard Pemimpin</h2>
+            <p class="text-muted">Selamat datang, {{ Auth::user()->name }}!</p>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Proyek Aktif</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['active_projects'] }}</p>
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Proyek Aktif</p>
+                            <h3 class="card-title">{{ $projects ?? 12 }}</h3>
+                        </div>
+                        <i class="bi bi-folder text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
             </div>
-            <i class="fas fa-hourglass-start text-4xl text-green-500 opacity-20"></i>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Anggota Tim</p>
+                            <h3 class="card-title">24</h3>
+                        </div>
+                        <i class="bi bi-people text-success" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Bimbingan</p>
+                            <h3 class="card-title">8</h3>
+                        </div>
+                        <i class="bi bi-person-check text-info" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Catatan</p>
+                            <h3 class="card-title">{{ $notes ?? 16 }}</h3>
+                        </div>
+                        <i class="bi bi-file-text text-warning" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Anggota Tim</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['team_members'] }}</p>
+    <!-- Recent Projects -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Proyek Terbaru</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nama Proyek</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Sistem K-AMU</td>
+                                    <td><span class="badge bg-primary">Berjalan</span></td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar" style="width: 75%">75%</div>
+                                        </div>
+                                    </td>
+                                    <td><a href="{{ route('leader.proyek') }}" class="btn btn-sm btn-info">Lihat</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Web Portal</td>
+                                    <td><span class="badge bg-success">Selesai</span></td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-success" style="width: 100%">100%</div>
+                                        </div>
+                                    </td>
+                                    <td><a href="{{ route('leader.proyek') }}" class="btn btn-sm btn-info">Lihat</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <i class="fas fa-users text-4xl text-purple-500 opacity-20"></i>
         </div>
-    </div>
-</div>
 
-<div class="bg-white rounded-lg shadow p-6">
-    <div class="flex justify-between items-center mb-6 pb-4 border-b">
-        <h3 class="text-lg font-semibold text-gray-800">Proyek Terbaru</h3>
-        <a href="{{ route('leader.proyek.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            <i class="fas fa-plus mr-2"></i>Buat Proyek
-        </a>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        @forelse($projects as $project)
-        <div class="p-4 border rounded hover:shadow-lg transition">
-            <div class="flex justify-between items-start mb-2">
-                <h4 class="font-semibold text-gray-800">{{ $project->name }}</h4>
-                <span class="px-2 py-1 text-xs font-semibold rounded-full
-                        @if($project->status === 'in_progress') bg-green-100 text-green-800
-                        @elseif($project->status === 'completed') bg-blue-100 text-blue-800
-                        @else bg-gray-100 text-gray-800 @endif">
-                    {{ $project->status }}
-                </span>
-            </div>
-            <p class="text-sm text-gray-600 mb-3">{{ $project->description }}</p>
-            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                <div class="bg-blue-600 h-2 rounded-full" @style(["width: " . ($project->progress ?? 0) . " %"])></div>
-            </div>
-            <p class="text-xs text-gray-500 mb-3">{{ $project->progress ?? 0 }}% Selesai</p>
-            <div class="flex space-x-2">
-                <a href="{{ route('leader.proyek.edit', $project) }}" class="text-blue-600 hover:text-blue-900 text-sm">
-                    <i class="fas fa-edit"></i>Edit
-                </a>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Peringatan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle"></i> Ada 3 tugas yang belum dikerjakan
+                    </div>
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <i class="bi bi-info-circle"></i> Laporan bulanan akan dibuka minggu depan
+                    </div>
+                </div>
             </div>
         </div>
-        @empty
-        <p class="text-gray-600 col-span-2">Belum ada proyek. <a href="{{ route('leader.proyek.create') }}" class="text-blue-600">Buat sekarang</a></p>
-        @endforelse
     </div>
 </div>
 @endsection
