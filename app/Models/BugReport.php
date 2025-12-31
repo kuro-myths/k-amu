@@ -42,6 +42,16 @@ class BugReport extends Model
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reporter_id');
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
     public function resolve(): void
     {
         $this->update([

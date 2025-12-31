@@ -34,6 +34,11 @@ class TestResult extends Model
         return $this->belongsTo(User::class, 'tester_id');
     }
 
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
     public function markAsPassed(): void
     {
         $this->update([

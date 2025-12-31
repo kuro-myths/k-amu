@@ -36,6 +36,11 @@ class Message extends Model
         return $this->belongsTo(User::class, 'recipient_id');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
     public function markAsRead(): void
     {
         $this->update(['read_at' => now()]);

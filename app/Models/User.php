@@ -44,6 +44,7 @@ class User extends Authenticatable
         'level',
         'points',
         'last_login_at',
+        'pet_id',
     ];
 
     /**
@@ -150,6 +151,14 @@ class User extends Authenticatable
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Relationship ke Pet
+     */
+    public function pet()
+    {
+        return $this->hasOne(Pet::class);
     }
 
     // Helper methods for role checking
