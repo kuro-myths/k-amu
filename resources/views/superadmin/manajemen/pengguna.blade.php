@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Kelola Pengguna')
+
 @section('content')
 <div class="container-fluid mt-4">
     <!-- Header -->
@@ -159,18 +161,5 @@
     </div>
     @endif
 
-</div>
-@endsection
-<tr>
-    <td colspan="5" class="px-6 py-4 text-center text-gray-600">Tidak ada pengguna</td>
-</tr>
-@endforelse
-</tbody>
-</table>
-</div>
-
-<div class="p-4">
-    {{ $users->links() }}
-</div>
 </div>
 @endsection

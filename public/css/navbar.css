@@ -33,19 +33,53 @@
     font-size: 1.5rem;
     color: var(--primary);
     cursor: pointer;
-    padding: 8px;
+    padding: 8px 12px;
     border-radius: 8px;
-    transition: var(--transition);
-    display: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0);
 }
 
 .btn-toggle-sidebar:hover {
-    background: var(--light);
+    background: rgba(79, 70, 229, 0.15);
+    color: var(--primary);
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+.btn-toggle-sidebar:active {
+    transform: scale(0.95);
+}
+
+.btn-toggle-sidebar i {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-toggle-sidebar:hover i {
+    transform: rotate(8deg) scale(1.1);
+}
+
+.btn-toggle-sidebar.collapsed i {
+    transform: rotate(-180deg);
 }
 
 @media (max-width: 991px) {
     .btn-toggle-sidebar {
-        display: block;
+        display: flex;
+    }
+}
+
+@media (min-width: 992px) {
+    .btn-toggle-sidebar {
+        display: flex;
     }
 }
 

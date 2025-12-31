@@ -30,18 +30,18 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="email-tab" data-bs-toggle="tab" data-bs-target="#email" type="button">
-                <i class="bi bi-envelope"></i> Email
+            <button class="nav-link" id="display-tab" data-bs-toggle="tab" data-bs-target="#display" type="button">
+                <i class="bi bi-palette"></i> Tampilan
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button">
-                <i class="bi bi-shield-lock"></i> Keamanan
+            <button class="nav-link" id="notification-tab" data-bs-toggle="tab" data-bs-target="#notification" type="button">
+                <i class="bi bi-bell"></i> Notifikasi
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="maintenance-tab" data-bs-toggle="tab" data-bs-target="#maintenance" type="button">
-                <i class="bi bi-tools"></i> Pemeliharaan
+                <i class="bi bi-tools"></i> Sistem
             </button>
         </li>
     </ul>
@@ -144,185 +144,14 @@
             </div>
         </div>
 
-        <!-- Email Settings -->
-        <div class="tab-pane fade" id="email" role="tabpanel">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header border-0 bg-light p-3">
-                            <h6 class="mb-0">Pengaturan Email</h6>
-                        </div>
-                        <div class="card-body">
-                            <form method="POST" action="{{ route('superadmin.pengaturan.update') }}">
-                                @csrf
+        <!-- Tampilan/Display Settings -->
+        @include('superadmin.pengaturan.tampilan')
 
-                                <!-- Mail Driver -->
-                                <div class="mb-3">
-                                    <label for="mailDriver" class="form-label fw-semibold">
-                                        <i class="bi bi-envelope-open"></i> Pengirim Email
-                                    </label>
-                                    <select class="form-select" id="mailDriver" name="mail_driver" required>
-                                        <option value="smtp">SMTP</option>
-                                        <option value="sendmail">Sendmail</option>
-                                        <option value="log">Log</option>
-                                    </select>
-                                </div>
+        <!-- Notifikasi Settings -->
+        @include('superadmin.pengaturan.notifikasi')
 
-                                <!-- Mail From -->
-                                <div class="mb-3">
-                                    <label for="mailFrom" class="form-label fw-semibold">
-                                        <i class="bi bi-at"></i> Email Pengirim
-                                    </label>
-                                    <input type="email" class="form-control" id="mailFrom" name="mail_from" value="noreply@k-amu.test" required>
-                                </div>
-
-                                <!-- SMTP Host -->
-                                <div class="mb-3">
-                                    <label for="smtpHost" class="form-label fw-semibold">
-                                        <i class="bi bi-server"></i> SMTP Host
-                                    </label>
-                                    <input type="text" class="form-control" id="smtpHost" name="smtp_host" placeholder="smtp.example.com">
-                                </div>
-
-                                <!-- SMTP Port -->
-                                <div class="mb-3">
-                                    <label for="smtpPort" class="form-label fw-semibold">
-                                        <i class="bi bi-signpost"></i> SMTP Port
-                                    </label>
-                                    <input type="number" class="form-control" id="smtpPort" name="smtp_port" value="587">
-                                </div>
-
-                                <!-- SMTP Username -->
-                                <div class="mb-3">
-                                    <label for="smtpUser" class="form-label fw-semibold">
-                                        <i class="bi bi-person"></i> SMTP Username
-                                    </label>
-                                    <input type="text" class="form-control" id="smtpUser" name="smtp_username" placeholder="username@example.com">
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-circle"></i> Simpan Perubahan
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Security Settings -->
-        <div class="tab-pane fade" id="security" role="tabpanel">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header border-0 bg-light p-3">
-                            <h6 class="mb-0">Pengaturan Keamanan</h6>
-                        </div>
-                        <div class="card-body">
-                            <!-- Session Timeout -->
-                            <div class="mb-4">
-                                <label for="sessionTimeout" class="form-label fw-semibold">
-                                    <i class="bi bi-clock"></i> Session Timeout (menit)
-                                </label>
-                                <input type="number" class="form-control" id="sessionTimeout" value="120" disabled>
-                                <small class="text-muted">Pengguna akan keluar otomatis setelah 120 menit tidak aktif</small>
-                            </div>
-
-                            <!-- Enable 2FA -->
-                            <div class="mb-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="enable2FA" name="enable_2fa" value="1" checked>
-                                    <label class="form-check-label" for="enable2FA">
-                                        <i class="bi bi-shield-check"></i> Aktifkan Two-Factor Authentication (2FA)
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Force HTTPS -->
-                            <div class="mb-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="forceHttps" name="force_https" value="1" checked>
-                                    <label class="form-check-label" for="forceHttps">
-                                        <i class="bi bi-lock"></i> Paksa HTTPS
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Allowed Login Attempts -->
-                            <div class="mb-4">
-                                <label for="loginAttempts" class="form-label fw-semibold">
-                                    <i class="bi bi-exclamation-triangle"></i> Maksimal Percobaan Login
-                                </label>
-                                <input type="number" class="form-control" id="loginAttempts" value="5" disabled>
-                                <small class="text-muted">Akun akan terkunci sementara setelah 5 kali gagal login</small>
-                            </div>
-
-                            <button class="btn btn-primary" disabled>
-                                <i class="bi bi-check-circle"></i> Simpan Perubahan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Maintenance -->
-        <div class="tab-pane fade" id="maintenance" role="tabpanel">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header border-0 bg-light p-3">
-                            <h6 class="mb-0">Pemeliharaan Sistem</h6>
-                        </div>
-                        <div class="card-body">
-                            <!-- Maintenance Mode -->
-                            <div class="mb-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="maintenanceMode" name="maintenance_mode" value="1">
-                                    <label class="form-check-label" for="maintenanceMode">
-                                        <i class="bi bi-cone-striped"></i> Mode Pemeliharaan
-                                    </label>
-                                </div>
-                                <small class="text-muted d-block mt-1">Matikan aplikasi untuk pengguna reguler selama pemeliharaan</small>
-                            </div>
-
-                            <!-- Database Actions -->
-                            <div class="mb-4">
-                                <h6 class="mb-3">Database</h6>
-                                <button class="btn btn-outline-warning me-2" disabled>
-                                    <i class="bi bi-arrow-counterclockwise"></i> Backup Database
-                                </button>
-                                <button class="btn btn-outline-danger" disabled>
-                                    <i class="bi bi-bootstrap-reboot"></i> Restore Database
-                                </button>
-                            </div>
-
-                            <!-- Cache -->
-                            <div class="mb-4">
-                                <h6 class="mb-3">Cache</h6>
-                                <form method="POST" action="{{ route('superadmin.pengaturan.clearCache') }}" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-outline-info">
-                                        <i class="bi bi-trash"></i> Hapus Cache
-                                    </button>
-                                </form>
-                                <button class="btn btn-outline-secondary ms-2" disabled>
-                                    <i class="bi bi-gear"></i> Optimize Cache
-                                </button>
-                            </div>
-
-                            <!-- Logs -->
-                            <div class="mb-4">
-                                <h6 class="mb-3">Log Sistem</h6>
-                                <button class="btn btn-outline-danger" disabled>
-                                    <i class="bi bi-trash"></i> Hapus Log Sistem
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Sistem Settings -->
+        @include('superadmin.pengaturan.sistem')
     </div>
 </div>
 @endsection

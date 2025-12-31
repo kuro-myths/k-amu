@@ -1,0 +1,601 @@
+/* ========================================
+   CUSTOM STYLES - K-AMU Application
+   Bootstrap 5 Override & Custom Styling
+   ======================================== */
+
+:root {
+    --primary: #4f46e5;
+    --secondary: #06b6d4;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    --dark-bg: #1a2332;
+    --dark-border: #2a3a4a;
+    --light-bg: #f8fafc;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   BODY & GENERAL STYLES
+   ======================================== */
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--light-bg);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #111827;
+}
+
+.app-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ========================================
+   HEADER/NAVBAR STYLES
+   ======================================== */
+
+.navbar-main {
+    background: var(--dark-bg);
+    border-bottom: 1px solid var(--dark-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 100%;
+    gap: 30px;
+}
+
+/* Navbar Brand */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 200px;
+}
+
+.btn-toggle-sidebar {
+    background: transparent;
+    border: 1px solid #4a5a6a;
+    font-size: 1.3rem;
+    color: #60a5fa;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: var(--transition);
+    display: none;
+}
+
+.btn-toggle-sidebar:hover {
+    background: rgba(79, 70, 229, 0.2);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: white;
+}
+
+/* Navbar Search */
+.navbar-search {
+    flex: 1;
+    max-width: 300px;
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-wrapper i {
+    position: absolute;
+    left: 12px;
+    color: #9ca3af;
+}
+
+.search-wrapper .form-control {
+    padding-left: 38px;
+    background: #2a3a4a;
+    border: 1px solid #374151;
+    color: white;
+    border-radius: 6px;
+}
+
+.search-wrapper .form-control::placeholder {
+    color: #6b7280;
+}
+
+.search-wrapper .form-control:focus {
+    background: #2a3a4a;
+    border-color: var(--primary);
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+}
+
+/* Navbar Right */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar-divider {
+    width: 1px;
+    height: 30px;
+    background: #374151;
+}
+
+/* Navbar Icons */
+.navbar-icon-group {
+    position: relative;
+}
+
+.navbar-icon-btn {
+    background: transparent;
+    border: none;
+    color: #d1d5db;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.navbar-icon-btn:hover {
+    background: rgba(79, 70, 229, 0.2);
+    color: var(--primary);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--danger);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 5px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Navbar User */
+.navbar-user {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-user-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: none;
+    color: #d1d5db;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.navbar-user-btn:hover {
+    background: rgba(79, 70, 229, 0.1);
+}
+
+.navbar-user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.dropdown-menu {
+    background: var(--dark-bg);
+    border: 1px solid var(--dark-border);
+    border-radius: 8px;
+}
+
+.dropdown-item {
+    color: #d1d5db !important;
+    transition: var(--transition);
+}
+
+.dropdown-item:hover {
+    background: rgba(79, 70, 229, 0.15);
+    color: var(--primary) !important;
+}
+
+.dropdown-divider {
+    border-color: var(--dark-border);
+}
+
+/* ========================================
+   SIDEBAR STYLES
+   ======================================== */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    width: 270px;
+    height: calc(100vh - 70px);
+    background: var(--dark-bg);
+    border-right: 1px solid var(--dark-border);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    z-index: 999;
+}
+
+/* Sidebar Top */
+.sidebar-top {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--dark-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.sidebar-logo h5 {
+    margin: 0;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.brand-subtitle {
+    color: #9ca3af;
+    display: block;
+    margin-top: 2px;
+}
+
+.btn-close-sidebar {
+    background: transparent;
+    border: 1px solid #4a5a6a;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    display: none;
+    transition: var(--transition);
+}
+
+.btn-close-sidebar:hover {
+    background: rgba(79, 70, 229, 0.2);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+    padding: 16px 12px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-menu li {
+    margin-bottom: 8px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #d1d5db;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: var(--transition);
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+}
+
+.menu-link:hover {
+    background: rgba(79, 70, 229, 0.15);
+    color: var(--primary);
+    border-color: rgba(79, 70, 229, 0.3);
+}
+
+.menu-link.active {
+    background: rgba(79, 70, 229, 0.25);
+    color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 500;
+}
+
+.menu-link i {
+    font-size: 1.2rem;
+    min-width: 24px;
+}
+
+/* Submenu */
+.menu-submenu {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+    display: none;
+}
+
+.menu-submenu.show {
+    display: block;
+}
+
+.menu-submenu li {
+    margin: 0;
+}
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px 10px 52px;
+    color: #9ca3af;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.submenu-link:hover {
+    background: rgba(79, 70, 229, 0.1);
+    color: #d1d5db;
+}
+
+.submenu-link.active {
+    color: var(--primary);
+    background: rgba(79, 70, 229, 0.15);
+}
+
+/* ========================================
+   MAIN CONTENT
+   ======================================== */
+
+main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: var(--light-bg);
+    margin-top: 70px;
+    margin-left: 270px;
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE
+   ======================================== */
+
+@media (max-width: 991px) {
+    .btn-toggle-sidebar {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -270px;
+        transition: var(--transition);
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    main {
+        margin-left: 0;
+    }
+
+    .navbar-search {
+        display: none;
+    }
+
+    .navbar-right > div:nth-child(1) {
+        display: none;
+    }
+
+    .navbar-divider {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-container {
+        gap: 15px;
+        padding: 0 15px;
+    }
+
+    .navbar-user-btn > div:last-child {
+        display: none;
+    }
+
+    main {
+        padding: 15px;
+    }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.text-muted {
+    color: #6b7280 !important;
+}
+
+.border-subtle {
+    border-color: #e5e7eb !important;
+}
+
+.bg-light-subtle {
+    background-color: #f9fafb !important;
+}
+
+/* ========================================
+   FORMS & INPUTS
+   ======================================== */
+
+.form-control,
+.form-select {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 10px 12px;
+    transition: var(--transition);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: var(--transition);
+    padding: 10px 16px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background: #4338ca;
+    border-color: #4338ca;
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-secondary:hover {
+    background: #0891b2;
+    border-color: #0891b2;
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+
+.card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    border-radius: 8px 8px 0 0;
+}
+
+/* ========================================
+   SCROLLBAR CUSTOM
+   ======================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

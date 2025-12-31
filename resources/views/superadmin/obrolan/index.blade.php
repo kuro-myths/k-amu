@@ -1,44 +1,68 @@
 @extends('layouts.app')
 
-@section('title', 'Obrolan Global')
+@section('title', 'Obrolan - SuperAdmin')
 
 @section('content')
 <div class="container-fluid mt-4">
     <!-- Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2 class="mb-0">
-                <i class="bi bi-chat-dots-fill"></i> Obrolan Global
-            </h2>
-            <p class="text-muted mt-1">Komunikasi dengan semua pengguna sistem</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-bold text-dark">
+                <i class="bi bi-chat-dots-fill text-warning"></i> Obrolan Pribadi
+            </h1>
+            <p class="text-muted mb-0">Berkomunikasi dengan pengguna lain secara privat</p>
         </div>
     </div>
 
-    <!-- Chat Container -->
-    <div class="row">
-        <!-- Sidebar Users -->
-        <div class="col-md-3 mb-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header border-0 bg-light p-3">
-                    <h6 class="mb-3">
-                        <i class="bi bi-person-circle"></i> Pengguna Online
+    <!-- Alert Messages -->
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle"></i> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    @if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-circle"></i> Ada kesalahan:
+        <ul class="mb-0 mt-2">
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    <div class="row" style="height: 70vh;">
+        <!-- Users List Sidebar -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm h-100 d-flex flex-column">
+                <div class="card-header border-0 bg-light">
+                    <h6 class="mb-3 fw-bold">
+                        <i class="bi bi-people-fill"></i> Daftar Pengguna
                     </h6>
-                    <input type="text" class="form-control form-control-sm" placeholder="Cari pengguna..." id="searchUser">
+                    <input type="text" class="form-control form-control-sm" id="searchUser" placeholder="Cari pengguna...">
                 </div>
-                <div class="list-group list-group-flush" id="userList" style="max-height: 500px; overflow-y: auto;">
-                    @forelse($users ?? [] as $user)
-                    <a href="#" class="list-group-item list-group-item-action py-2" data-user-id="{{ $user->id }}">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <small class="d-block fw-semibold">{{ $user->name }}</small>
-                                <small class="text-muted">{{ ucfirst($user->role) }}</small>
+                <div class="list-group list-group-flush flex-grow-1" id="usersList" style="overflow-y: auto;">
+                    @forelse($users as $user)
+                    <a href="javascript:void(0)" class="list-group-item list-group-item-action py-3 border-0 user-item"
+                        data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}" data-user-email="{{ $user->email }}"
+                        onclick="selectUser(this)">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 fw-5">{{ $user->name }}</h6>
+                                <small class="text-muted d-block">{{ $user->email }}</small>
+                                @if($user->role)
+                                <span class="badge bg-info mt-1">{{ ucfirst($user->role) }}</span>
+                                @endif
                             </div>
-                            <span class="badge bg-success rounded-pill" style="width: 8px; height: 8px; padding: 0;"></span>
+                            <span class="badge bg-success rounded-circle" style="width: 10px; height: 10px;" title="Online"></span>
                         </div>
                     </a>
                     @empty
                     <div class="p-3 text-center text-muted">
-                        <small>Tidak ada pengguna online</small>
+                        <small><i class="bi bi-inbox"></i> Tidak ada pengguna tersedia</small>
                     </div>
                     @endforelse
                 </div>
@@ -46,53 +70,40 @@
         </div>
 
         <!-- Chat Area -->
-        <div class="col-md-9 mb-3">
-            <div class="card border-0 shadow-sm h-100">
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm h-100 d-flex flex-column">
                 <!-- Chat Header -->
-                <div class="card-header border-bottom bg-light p-3">
+                <div class="card-header border-bottom bg-light">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0" id="chatTitle">
-                            <i class="bi bi-chat-fill"></i> Obrolan Global
-                        </h6>
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="bi bi-info-circle"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Messages Area -->
-                <div class="card-body p-3" id="messagesArea" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
-                    @forelse($messages ?? [] as $message)
-                    <div class="mb-3">
-                        <div class="d-flex gap-2">
-                            <div class="flex-shrink-0">
-                                <div class="avatar bg-primary text-white rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                    <small>{{ substr($message->user->name, 0, 1) }}</small>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <small class="d-block fw-semibold">{{ $message->user->name }}</small>
-                                <div class="bg-white p-2 rounded" style="max-width: 80%;">
-                                    <p class="mb-0">{{ $message->content }}</p>
-                                </div>
-                                <small class="text-muted d-block mt-1">{{ $message->created_at->format('H:i') }}</small>
-                            </div>
+                        <div id="chatHeaderTitle">
+                            <h6 class="mb-0 text-muted">
+                                <i class="bi bi-chat-dots"></i> Pilih pengguna untuk memulai chat
+                            </h6>
                         </div>
                     </div>
-                    @empty
-                    <div class="text-center py-5">
-                        <i class="bi bi-chat-left-dots" style="font-size: 2rem; color: #ccc;"></i>
-                        <p class="text-muted mt-3">Mulai percakapan baru</p>
-                    </div>
-                    @endforelse
                 </div>
 
-                <!-- Message Input -->
-                <div class="card-footer border-top p-3">
-                    <form id="messageForm" method="POST" action="{{ route('superadmin.obrolan.send') }}">
+                <!-- Messages Container -->
+                <div class="card-body p-3 flex-grow-1" id="messagesContainer" style="overflow-y: auto; background-color: #f8f9fa; display: none;">
+                    <!-- Messages will be loaded here -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="card-body d-flex align-items-center justify-content-center flex-grow-1" id="emptyState">
+                    <div class="text-center text-muted">
+                        <i class="bi bi-chat-left" style="font-size: 4rem; opacity: 0.3;"></i>
+                        <p class="mt-3 mb-0"><strong>Belum ada percakapan</strong></p>
+                        <p class="text-muted small">Pilih pengguna dari daftar untuk memulai obrolan</p>
+                    </div>
+                </div>
+
+                <!-- Message Input Form -->
+                <div class="card-footer border-top p-3" id="messageInputForm" style="display: none;">
+                    <form method="POST" id="sendMessageForm" onsubmit="return sendMessage(event)">
                         @csrf
+                        <input type="hidden" name="recipient_id" id="recipientId">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="messageInput" name="content" placeholder="Ketik pesan..." required>
+                            <input type="text" class="form-control" name="content" id="messageInput" placeholder="Ketik pesan..." required>
                             <button class="btn btn-primary" type="submit">
                                 <i class="bi bi-send"></i> Kirim
                             </button>
@@ -104,43 +115,150 @@
     </div>
 </div>
 
-<style>
-    #messagesArea::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    #messagesArea::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    #messagesArea::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-    }
-
-    #messagesArea::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-</style>
-
 <script>
-    document.getElementById('messageForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const content = document.getElementById('messageInput').value;
-        if (content.trim()) {
-            // Implement message sending via AJAX
-            console.log('Sending message:', content);
-            document.getElementById('messageInput').value = '';
-        }
-    });
+    function selectUser(element) {
+        const userId = element.dataset.userId;
+        const userName = element.dataset.userName;
+        const userEmail = element.dataset.userEmail;
 
-    // Search user functionality
-    document.getElementById('searchUser').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        document.querySelectorAll('#userList a').forEach(userItem => {
-            const userName = userItem.textContent.toLowerCase();
-            userItem.style.display = userName.includes(searchTerm) ? 'block' : 'none';
+        // Mark as active
+        document.querySelectorAll('.user-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        element.classList.add('active');
+
+        // Update form
+        document.getElementById('recipientId').value = userId;
+        document.getElementById('sendMessageForm').action = `{{ route('superadmin.obrolan') }}/${userId}/send`;
+
+        // Show input form
+        document.getElementById('messageInputForm').style.display = 'block';
+        document.getElementById('emptyState').style.display = 'none';
+        document.getElementById('messagesContainer').style.display = 'flex';
+        document.getElementById('messagesContainer').style.flexDirection = 'column';
+
+        // Update header
+        document.getElementById('chatHeaderTitle').innerHTML = `
+            <div>
+                <h6 class="mb-0">
+                    <i class="bi bi-chat-dots-fill"></i> 
+                    <strong>${userName}</strong>
+                    <small class="text-muted">${userEmail}</small>
+                </h6>
+            </div>
+        `;
+
+        // Load messages
+        loadMessages(userId);
+
+        // Focus input
+        document.getElementById('messageInput').focus();
+    }
+
+    function loadMessages(userId) {
+        const container = document.getElementById('messagesContainer');
+        container.innerHTML = `<div class="text-center text-muted py-5">
+            <p><i class="bi bi-chat-left-dots"></i> Mulai percakapan dengan pengguna ini</p>
+        </div>`;
+    }
+
+    function sendMessage(e) {
+        e.preventDefault();
+
+        const form = document.getElementById('sendMessageForm');
+        const content = document.getElementById('messageInput');
+
+        if (!content.value.trim()) return false;
+
+        // Add message to UI optimistically
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageBubble = document.createElement('div');
+        messageBubble.className = 'message-bubble message-sent';
+        messageBubble.innerHTML = `
+            <div>${content.value}</div>
+            <div class="message-time">Sekarang</div>
+        `;
+        messagesContainer.appendChild(messageBubble);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        // Send via AJAX
+        fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: 'recipient_id=' + document.getElementById('recipientId').value +
+                    '&content=' + encodeURIComponent(content.value)
+            })
+            .then(response => {
+                if (response.ok) {
+                    content.value = '';
+                    content.focus();
+                } else {
+                    messageBubble.remove();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageBubble.remove();
+            });
+
+        return false;
+    }
+
+    // Search users
+    document.getElementById('searchUser').addEventListener('keyup', function() {
+        const search = this.value.toLowerCase();
+        document.querySelectorAll('.user-item').forEach(item => {
+            const name = item.dataset.userName.toLowerCase();
+            const email = item.dataset.userEmail.toLowerCase();
+            item.style.display = (name.includes(search) || email.includes(search)) ? '' : 'none';
         });
     });
 </script>
+
+<style>
+    .user-item {
+        transition: all 0.3s ease;
+    }
+
+    .user-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .user-item.active {
+        background-color: #e7f3ff;
+        border-left: 3px solid #0d6efd;
+    }
+
+    .message-bubble {
+        max-width: 70%;
+        word-wrap: break-word;
+        padding: 10px 14px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+    }
+
+    .message-sent {
+        background-color: #0d6efd;
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 2px;
+    }
+
+    .message-received {
+        background-color: #e9ecef;
+        color: #333;
+        align-self: flex-start;
+        border-bottom-left-radius: 2px;
+    }
+
+    .message-time {
+        font-size: 0.75rem;
+        opacity: 0.6;
+    }
+</style>
+
 @endsection

@@ -2,7 +2,7 @@
     <div class="navbar-container">
         <!-- Logo & Toggle -->
         <div class="navbar-brand">
-            <button class="btn-toggle-sidebar" id="sidebarToggle">
+            <button class="btn-toggle-sidebar" id="sidebarToggle" data-bs-toggle="tooltip" title="Buka/Tutup Menu">
                 <i class="bi bi-list"></i>
             </button>
             <div class="navbar-logo">
@@ -22,17 +22,35 @@
         <!-- Navbar Right - User Menu -->
         <div class="navbar-right">
             <!-- Notifications -->
-            <button class="navbar-icon-btn" data-bs-toggle="dropdown">
+            @php
+            $unreadNotifications = auth()->user()->notifications()->unread()->latest()->limit(5)->get();
+            $unreadCount = auth()->user()->notifications()->unread()->count();
+            @endphp
+            <button class="navbar-icon-btn" id="notificationBtn" data-bs-toggle="dropdown">
                 <i class="bi bi-bell"></i>
-                <span class="notification-badge">3</span>
+                @if($unreadCount > 0)
+                <span class="notification-badge" id="notificationBadge">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+                @endif
             </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-info-circle"></i> Update Sistem</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-exclamation-circle"></i> Bug Report</a></li>
+            <ul class="dropdown-menu dropdown-menu-end" style="min-width: 300px;">
+                @forelse($unreadNotifications as $notif)
+                <li>
+                    <a class="dropdown-item" href="{{ route('superadmin.notifikasi') }}">
+                        <i class="bi {{ $notif->icon ?? 'bi-info-circle' }}"></i>
+                        <div class="d-flex flex-column flex-grow-1">
+                            <span class="fw-bold">{{ $notif->title }}</span>
+                            <small class="text-muted">{{ Str::limit($notif->content, 50) }}</small>
+                            <small class="text-secondary">{{ $notif->created_at->diffForHumans() }}</small>
+                        </div>
+                    </a>
+                </li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="#">Lihat Semua</a></li>
+                @empty
+                <li class="p-3 text-center text-muted">Tidak ada notifikasi baru</li>
+                @endforelse
+                <li><a class="dropdown-item text-center text-primary fw-bold" href="{{ route('superadmin.notifikasi') }}">Lihat Semua</a></li>
             </ul>
 
             <!-- User Menu -->

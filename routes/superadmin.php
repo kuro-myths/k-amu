@@ -5,6 +5,7 @@ use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\SuperAdmin\UserManagementController;
 use App\Http\Controllers\SuperAdmin\ChatController;
 use App\Http\Controllers\SuperAdmin\NoteController;
+use App\Http\Controllers\SuperAdmin\NotificationController;
 use App\Http\Controllers\SuperAdmin\ProfileController;
 use App\Http\Controllers\SuperAdmin\ReportController;
 use App\Http\Controllers\SuperAdmin\SettingController;
@@ -27,6 +28,15 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     // Activity Log
     Route::get('/catatan-aktivitas', [UserManagementController::class, 'catatanAktivitas'])->name('catatan-aktivitas');
 
+    // Projects - Added
+    Route::get('/proyek', [UserManagementController::class, 'proyek'])->name('proyek');
+
+    // Bug Reports - Added
+    Route::get('/laporan-bug', [UserManagementController::class, 'laporanBug'])->name('laporan-bug');
+
+    // Test Results - Added
+    Route::get('/hasil-testing', [UserManagementController::class, 'hasilTesting'])->name('hasil-testing');
+
     // Notes
     Route::get('/catatan', [NoteController::class, 'index'])->name('catatan');
     Route::get('/catatan/create', [NoteController::class, 'create'])->name('catatan.create');
@@ -39,10 +49,24 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
 
     // Chat / Obrolan
     Route::get('/obrolan', [ChatController::class, 'index'])->name('obrolan');
+    Route::post('/obrolan/{userId}/send', [ChatController::class, 'sendPrivateMessage'])->name('obrolan.send-private');
     Route::post('/obrolan/send', [ChatController::class, 'send'])->name('obrolan.send');
+    Route::get('/obrolan/pribadi', [ChatController::class, 'pribadi'])->name('obrolan.pribadi');
+    Route::get('/obrolan/{userId}', [ChatController::class, 'conversation'])->name('obrolan.detail');
+    Route::post('/obrolan/{userId}/pesan', [ChatController::class, 'sendPrivateMessage'])->name('obrolan.send-message');
+
+    // Notifications / Notifikasi
+    Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi');
+    Route::get('/notifikasi/api/unread', [NotificationController::class, 'getUnreadCount'])->name('notifikasi.unread');
+    Route::post('/notifikasi/send', [NotificationController::class, 'send'])->name('notifikasi.send');
+    Route::post('/notifikasi/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifikasi.read');
+    Route::post('/notifikasi/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifikasi.read-all');
+    Route::delete('/notifikasi/{notification}', [NotificationController::class, 'destroy'])->name('notifikasi.destroy');
+    Route::delete('/notifikasi', [NotificationController::class, 'destroyAll'])->name('notifikasi.destroy-all');
 
     // Reports / Laporan
     Route::get('/laporan', [ReportController::class, 'index'])->name('laporan');
+    Route::get('/log-aktivitas', [ReportController::class, 'logAktivitas'])->name('log-aktivitas');
 
     // Settings / Pengaturan
     Route::get('/pengaturan', [SettingController::class, 'index'])->name('pengaturan');
@@ -53,6 +77,12 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     Route::get('/bantuan', function () {
         return view('superadmin.bantuan.index');
     })->name('bantuan');
+    Route::get('/bantuan/faq', function () {
+        return view('superadmin.bantuan.faq');
+    })->name('bantuan.faq');
+    Route::get('/bantuan/panduan', function () {
+        return view('superadmin.bantuan.panduan');
+    })->name('bantuan.panduan');
 
     // Tools / Alat
     Route::get('/alat', function () {
@@ -61,6 +91,15 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
             'totalLogs' => \App\Models\ActivityLog::count(),
         ]);
     })->name('alat');
+    Route::get('/alat/cadangan', function () {
+        return view('superadmin.alat.cadangan');
+    })->name('alat.cadangan');
+    Route::get('/alat/ekspor', function () {
+        return view('superadmin.alat.ekspor');
+    })->name('alat.ekspor');
+    Route::get('/alat/impor', function () {
+        return view('superadmin.alat.impor');
+    })->name('alat.impor');
     Route::post('/alat/clearCache', [SettingController::class, 'clearCache'])->name('alat.clearCache');
     Route::post('/alat/optimizeDB', function () {
         return back()->with('success', 'Database berhasil dioptimalkan');

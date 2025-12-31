@@ -91,6 +91,21 @@
                         <!-- Actions -->
                         <div class="ms-3">
                             <div class="btn-group btn-group-sm">
+                                @if(!$note->is_pinned)
+                                <form action="{{ route('superadmin.catatan.pin', $note->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-info" title="Pin catatan">
+                                        <i class="bi bi-pin"></i>
+                                    </button>
+                                </form>
+                                @else
+                                <form action="{{ route('superadmin.catatan.unpin', $note->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-info" title="Unpin catatan">
+                                        <i class="bi bi-pin-fill"></i>
+                                    </button>
+                                </form>
+                                @endif
                                 <a href="{{ route('superadmin.catatan.edit', $note->id) }}" class="btn btn-outline-warning">
                                     <i class="bi bi-pencil"></i>
                                 </a>
