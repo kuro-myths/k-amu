@@ -1,19 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\NoteController;
 
 // Semua route untuk role USER
 Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {
     // Dashboard
-    Route::get('/beranda', [DashboardController::class, 'index'])->name('beranda');
+    Route::get('/beranda', [UserController::class, 'beranda'])->name('beranda');
 
-    // Notes
-    Route::get('/catatan', [NoteController::class, 'index'])->name('catatan');
-    Route::get('/catatan/create', [NoteController::class, 'create'])->name('catatan.create');
-    Route::post('/catatan', [NoteController::class, 'store'])->name('catatan.store');
-    Route::get('/catatan/{note}/edit', [NoteController::class, 'edit'])->name('catatan.edit');
-    Route::put('/catatan/{note}', [NoteController::class, 'update'])->name('catatan.update');
-    Route::delete('/catatan/{note}', [NoteController::class, 'destroy'])->name('catatan.destroy');
+    // Catatan (Notes)
+    Route::get('/catatan', [UserController::class, 'catatan'])->name('catatan');
+
+    // Chat
+    Route::get('/obrolan', [UserController::class, 'obrolan'])->name('obrolan');
+
+    // Proyek
+    Route::get('/proyek', [UserController::class, 'proyek'])->name('proyek');
+
+    // Analisis / Progress
+    Route::get('/analisis', [UserController::class, 'analisis'])->name('analisis');
+
+    // Profil
+    Route::get('/profil', [UserController::class, 'profil'])->name('profil');
+
+    // Bantuan
+    Route::get('/bantuan', [UserController::class, 'bantuan'])->name('bantuan');
 });

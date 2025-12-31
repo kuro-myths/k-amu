@@ -1,94 +1,128 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Tester - K-AMU')
-@section('page-title', 'Dashboard Tester')
-
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Total Testing</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['total_tests'] }}</p>
-            </div>
-            <i class="fas fa-vial text-4xl text-blue-500 opacity-20"></i>
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="page-title">Dashboard QA Tester</h2>
+            <p class="text-muted">Selamat datang, {{ Auth::user()->name }}!</p>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Testing Berhasil</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['passed_tests'] }}</p>
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Bug Reports</p>
+                            <h3 class="card-title">{{ $totalBugs ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-bug text-danger" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
             </div>
-            <i class="fas fa-check-circle text-4xl text-green-500 opacity-20"></i>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Test Results</p>
+                            <h3 class="card-title">{{ $totalTests ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Catatan</p>
+                            <h3 class="card-title">{{ $notes ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-file-text text-info" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text text-muted">Status</p>
+                            <h3 class="card-title">Aktif</h3>
+                        </div>
+                        <i class="bi bi-check-circle text-warning" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Testing Gagal</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['failed_tests'] }}</p>
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Aksi Cepat</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('tester.laporan') }}" class="btn btn-outline-danger w-100">
+                                <i class="bi bi-bug"></i> Bug Reports
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('tester.tools') }}" class="btn btn-outline-success w-100">
+                                <i class="bi bi-check-circle"></i> Test Results
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('tester.analisis') }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-graph-up"></i> Analisis
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{{ route('tester.catatan') }}" class="btn btn-outline-info w-100">
+                                <i class="bi bi-file-text"></i> Catatan
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <i class="fas fa-times-circle text-4xl text-red-500 opacity-20"></i>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600 text-sm">Level / Poin</p>
-                <p class="text-3xl font-bold text-gray-800">{{ $stats['level'] }} / {{ $stats['points'] }}</p>
-            </div>
-            <i class="fas fa-star text-4xl text-yellow-500 opacity-20"></i>
         </div>
     </div>
 </div>
-
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-    <div class="bg-white rounded-lg shadow p-6 col-span-2">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Testing Terbaru</h3>
-        <div class="space-y-3">
-            @forelse($testResults as $result)
-            <div class="flex items-center justify-between p-3 border rounded">
-                <div>
-                    <p class="font-semibold text-gray-800">{{ $result->feature_name }}</p>
-                    <p class="text-sm text-gray-600">{{ $result->test_description }}</p>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold
-                        @if($result->status === 'passed') bg-green-100 text-green-800
-                        @elseif($result->status === 'failed') bg-red-100 text-red-800
-                        @else bg-yellow-100 text-yellow-800 @endif">
-                    {{ $result->status }}
-                </span>
-            </div>
-            @empty
-            <p class="text-gray-600">Belum ada hasil testing</p>
-            @endforelse
-        </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Akses Cepat</h3>
-        <div class="space-y-2">
-            <a href="{{ route('tester.tools') }}" class="block p-3 bg-blue-50 rounded hover:bg-blue-100 transition">
-                <i class="fas fa-tools text-blue-600 mr-2"></i>
-                <span class="font-semibold text-gray-800">Tools & Bug</span>
-            </a>
-            <a href="{{ route('tester.monitoring') }}" class="block p-3 bg-green-50 rounded hover:bg-green-100 transition">
-                <i class="fas fa-eye text-green-600 mr-2"></i>
-                <span class="font-semibold text-gray-800">Monitoring</span>
-            </a>
-            <a href="{{ route('tester.laporan') }}" class="block p-3 bg-purple-50 rounded hover:bg-purple-100 transition">
-                <i class="fas fa-chart-bar text-purple-600 mr-2"></i>
-                <span class="font-semibold text-gray-800">Laporan</span>
-            </a>
-            <a href="{{ route('tester.statistik') }}" class="block p-3 bg-yellow-50 rounded hover:bg-yellow-100 transition">
-                <i class="fas fa-percent text-yellow-600 mr-2"></i>
-                <span class="font-semibold text-gray-800">Statistik</span>
-            </a>
-        </div>
-    </div>
+@endsection
+<h3 class="text-lg font-semibold text-gray-800 mb-4">Akses Cepat</h3>
+<div class="space-y-2">
+    <a href="{{ route('tester.tools') }}" class="block p-3 bg-blue-50 rounded hover:bg-blue-100 transition">
+        <i class="fas fa-tools text-blue-600 mr-2"></i>
+        <span class="font-semibold text-gray-800">Tools & Bug</span>
+    </a>
+    <a href="{{ route('tester.monitoring') }}" class="block p-3 bg-green-50 rounded hover:bg-green-100 transition">
+        <i class="fas fa-eye text-green-600 mr-2"></i>
+        <span class="font-semibold text-gray-800">Monitoring</span>
+    </a>
+    <a href="{{ route('tester.laporan') }}" class="block p-3 bg-purple-50 rounded hover:bg-purple-100 transition">
+        <i class="fas fa-chart-bar text-purple-600 mr-2"></i>
+        <span class="font-semibold text-gray-800">Laporan</span>
+    </a>
+    <a href="{{ route('tester.statistik') }}" class="block p-3 bg-yellow-50 rounded hover:bg-yellow-100 transition">
+        <i class="fas fa-percent text-yellow-600 mr-2"></i>
+        <span class="font-semibold text-gray-800">Statistik</span>
+    </a>
+</div>
+</div>
 </div>
 @endsection

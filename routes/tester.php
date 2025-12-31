@@ -1,44 +1,33 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Tester\DashboardController;
+use App\Http\Controllers\Tester\TesterController;
 use App\Http\Controllers\Tester\BugController;
 use App\Http\Controllers\Tester\TestingController;
 
 Route::middleware(['auth', 'role:tester'])->prefix('tester')->name('tester.')->group(function () {
     // Dashboard
-    Route::get('/beranda', [DashboardController::class, 'index'])->name('beranda');
+    Route::get('/beranda', [TesterController::class, 'beranda'])->name('beranda');
 
-    // Tools & Bug Reports
-    Route::get('/tools', [BugController::class, 'index'])->name('tools');
-    Route::get('/tools/create', [BugController::class, 'create'])->name('tools.create');
-    Route::post('/tools', [BugController::class, 'store'])->name('tools.store');
-    Route::get('/tools/{bug}', [BugController::class, 'show'])->name('tools.show');
-    Route::get('/tools/{bug}/edit', [BugController::class, 'edit'])->name('tools.edit');
-    Route::put('/tools/{bug}', [BugController::class, 'update'])->name('tools.update');
+    // Bug Reports / Laporan
+    Route::get('/laporan', [TesterController::class, 'laporan'])->name('laporan');
+    Route::get('/laporan/create', [TesterController::class, 'toolsCreate'])->name('laporan.create');
 
-    // Test Results
-    Route::get('/laporan', [TestingController::class, 'laporan'])->name('laporan');
-    Route::get('/laporan/create', [TestingController::class, 'createResult'])->name('laporan.create');
-    Route::post('/laporan', [TestingController::class, 'storeResult'])->name('laporan.store');
+    // Test Results / Tools
+    Route::get('/tools', [TesterController::class, 'tools'])->name('tools');
 
-    // Monitoring
-    Route::get('/monitoring', [TestingController::class, 'monitoring'])->name('monitoring');
-
-    // Statistics
-    Route::get('/statistik', [TestingController::class, 'statistik'])->name('statistik');
+    // Analysis
+    Route::get('/analisis', [TesterController::class, 'analisis'])->name('analisis');
 
     // Catatan (Notes)
-    Route::get('/catatan', [DashboardController::class, 'catatan'])->name('catatan');
+    Route::get('/catatan', [TesterController::class, 'catatan'])->name('catatan');
 
     // Chat
-    Route::get('/obrolan', [DashboardController::class, 'obrolan'])->name('obrolan');
+    Route::get('/obrolan', [TesterController::class, 'obrolan'])->name('obrolan');
 
     // Profile
-    Route::get('/profil', [DashboardController::class, 'profil'])->name('profil');
+    Route::get('/profil', [TesterController::class, 'profil'])->name('profil');
 
-    // Sandbox & Documentation
-    Route::get('/sandbox', [DashboardController::class, 'sandbox'])->name('sandbox');
-    Route::get('/dokumentasi', [DashboardController::class, 'dokumentasi'])->name('dokumentasi');
-    Route::get('/pengaturan', [DashboardController::class, 'pengaturan'])->name('pengaturan');
+    // Help
+    Route::get('/bantuan', [TesterController::class, 'bantuan'])->name('bantuan');
 });

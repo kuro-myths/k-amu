@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pets', function (Blueprint $table) {
-            $table->enum('role_type', ['user', 'leader', 'mastercard', 'tester', 'superadmin'])->nullable()->after('pet_type');
+            // Kolom role_type sudah ada di create_pets_table
+            // Migration ini hanya placeholder untuk safety
+            if (!Schema::hasColumn('pets', 'role_type')) {
+                $table->enum('role_type', ['user', 'leader', 'mastercard', 'tester', 'superadmin'])->nullable()->after('pet_type');
+            }
         });
     }
 
