@@ -5,10 +5,6 @@
             <button class="btn-toggle-sidebar" id="sidebarToggle" data-bs-toggle="tooltip" title="Buka/Tutup Menu">
                 <i class="bi bi-list"></i>
             </button>
-            <div class="navbar-logo">
-                <i class="bi bi-shield-check"></i>
-                <span>K-AMU Admin</span>
-            </div>
         </div>
 
         <!-- Navbar Center - Search -->

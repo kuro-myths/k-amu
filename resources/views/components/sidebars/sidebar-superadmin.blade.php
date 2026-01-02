@@ -2,7 +2,8 @@
     <!-- Sidebar Header -->
     <div class="sidebar-header">
         <div class="sidebar-header-content">
-            <h5>Menu Admin</h5>
+            <img src="{{ asset('favicon.svg') }}" alt="K-amu" class="sidebar-logo">
+            <h5>K-amu</h5>
         </div>
         <div class="sidebar-header-actions">
             <button class="btn-close-sidebar d-lg-none" id="sidebarCloseBtn" data-bs-toggle="tooltip" title="Tutup">

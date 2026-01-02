@@ -5,10 +5,6 @@
             <button class="btn-toggle-sidebar" id="sidebarToggle">
                 <i class="bi bi-list"></i>
             </button>
-            <div class="navbar-logo">
-                <i class="bi bi-bug"></i>
-                <span>K-AMU Tester</span>
-            </div>
         </div>
 
         <!-- Navbar Center - Search -->

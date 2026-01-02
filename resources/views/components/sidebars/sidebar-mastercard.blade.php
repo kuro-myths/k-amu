@@ -1,10 +1,15 @@
 <aside class="sidebar" id="sidebar">
     <!-- Sidebar Header -->
     <div class="sidebar-header">
-        <h5>Menu Mastercard</h5>
-        <button class="btn-close-sidebar d-lg-none" id="sidebarCloseBtn">
-            <i class="bi bi-x"></i>
-        </button>
+        <div class="sidebar-header-content">
+            <img src="{{ asset('favicon.svg') }}" alt="K-amu" class="sidebar-logo">
+            <h5>K-amu</h5>
+        </div>
+        <div class="sidebar-header-actions">
+            <button class="btn-close-sidebar d-lg-none" id="sidebarCloseBtn">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
     </div>
 
     <!-- Sidebar Menu -->

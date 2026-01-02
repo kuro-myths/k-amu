@@ -1,0 +1,198 @@
+/* Footer Styling */
+.app-footer {
+    background: white;
+    border-top: 2px solid var(--gray-200);
+    padding: 15px 25px;
+    flex-shrink: 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    bottom: 0;
+    left: 260px;
+    right: 0;
+    height: 80px;
+    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar.collapsed ~ .right-content-wrapper .app-footer {
+    left: 80px;
+}
+
+.footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 100%;
+}
+
+/* Footer Icons */
+.footer-icons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-icon-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    color: var(--gray-600);
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+}
+
+.footer-icon-btn:hover {
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--primary);
+    transform: scale(1.08);
+}
+
+.footer-icon-btn:active {
+    transform: scale(0.95);
+}
+
+.footer-icon-btn i {
+    transition: transform 0.3s ease;
+}
+
+.footer-icon-btn:hover i {
+    transform: rotate(5deg);
+}
+
+/* Footer Info */
+.footer-info {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-info p {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin: 0;
+    font-weight: 500;
+}
+
+.footer-info span {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* Footer Status */
+.footer-status {
+    display: flex;
+    align-items: center;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    transition: all 0.3s ease;
+}
+
+.status-indicator.online {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.status-indicator.offline {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--gray-600);
+}
+
+.status-indicator i {
+    font-size: 0.6rem;
+    animation: pulse 2s infinite;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .app-footer {
+        left: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-footer {
+        padding: 12px 15px;
+    }
+
+    .footer-container {
+        gap: 10px;
+    }
+
+    .footer-info {
+        flex: 0;
+    }
+
+    .footer-info p {
+        font-size: 0.75rem;
+    }
+
+    .footer-icon-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    .status-indicator {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-footer {
+        padding: 10px 12px;
+    }
+
+    .footer-container {
+        gap: 8px;
+    }
+
+    .footer-info p {
+        display: none;
+    }
+
+    .footer-icon-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .status-indicator {
+        font-size: 0.7rem;
+        padding: 3px 6px;
+    }
+
+    .status-indicator span {
+        display: none;
+    }
+}
