@@ -1,0 +1,342 @@
+/* Theme Styling */
+:root {
+    --primary-color: #3b82f6;
+    --secondary-color: #8b5cf6;
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --accent-color: #ec4899;
+    --font-family: system-ui, -apple-system, sans-serif;
+    --font-size: 1rem;
+    --font-weight: 400;
+}
+
+/* Apply theme variables */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+}
+
+/* Primary buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* Secondary buttons */
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.btn-secondary:hover {
+    opacity: 0.9;
+}
+
+/* Accent elements */
+.accent-text {
+    color: var(--accent-color);
+}
+
+.accent-bg {
+    background-color: var(--accent-color);
+}
+
+/* Links */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--primary-color);
+    font-weight: var(--font-weight);
+}
+
+/* Search Widget Styles */
+.search-widget {
+    position: sticky;
+    top: 1rem;
+    background: var(--background-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-icon-btn {
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+}
+
+.search-icon-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Search Results */
+.result-item {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+    margin-bottom: 0.5rem;
+}
+
+.result-item:hover {
+    background-color: #f9fafb;
+}
+
+.result-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.result-content {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.result-meta {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+/* Tags and Bookmarks */
+.tag {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.bookmark-icon {
+    cursor: pointer;
+    font-size: 1.25rem;
+    transition: transform 0.2s;
+}
+
+.bookmark-icon:hover {
+    transform: scale(1.2);
+}
+
+.bookmark-icon.active {
+    color: #fbbf24;
+}
+
+/* History Widget */
+.history-item {
+    padding: 0.75rem;
+    border-left: 3px solid var(--primary-color);
+    background-color: #f9fafb;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.history-item:hover {
+    background-color: #f3f4f6;
+}
+
+.history-query {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.history-meta {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    --background-color: #1f2937;
+    --text-color: #f3f4f6;
+}
+
+body.dark-mode .search-widget {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .search-input {
+    background-color: #374151;
+    color: #f3f4f6;
+    border-color: #4b5563;
+}
+
+body.dark-mode .result-item {
+    background-color: #111827;
+    border-color: #374151;
+}
+
+body.dark-mode .result-item:hover {
+    background-color: #1f2937;
+}
+
+body.dark-mode .history-item {
+    background-color: #374151;
+}
+
+body.dark-mode .history-item:hover {
+    background-color: #4b5563;
+}
+
+/* Compact Mode */
+body.compact-mode .search-widget {
+    padding: 0.75rem;
+}
+
+body.compact-mode .result-item {
+    padding: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+body.compact-mode .result-title {
+    font-size: 1rem;
+}
+
+body.compact-mode .result-content {
+    display: none;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-results {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-widget {
+        position: relative;
+        top: 0;
+        margin-bottom: 2rem;
+    }
+
+    .result-title {
+        font-size: 1rem;
+    }
+
+    .result-item {
+        padding: 0.75rem;
+    }
+}
+
+/* Mode Specific Colors */
+
+/* Normal Mode - Light and Bright */
+body.theme-normal {
+    --primary-color: #3b82f6;
+    --secondary-color: #8b5cf6;
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --accent-color: #ec4899;
+}
+
+/* Private Mode - More Subdued Colors */
+body.theme-private {
+    --primary-color: #6366f1;
+    --secondary-color: #06b6d4;
+    --background-color: #0f172a;
+    --text-color: #e2e8f0;
+    --accent-color: #f43f5e;
+}
+
+/* Tor Mode - Dark and Minimal */
+body.theme-tor {
+    --primary-color: #7c3aed;
+    --secondary-color: #6d28d9;
+    --background-color: #1a1a1a;
+    --text-color: #d1d5db;
+    --accent-color: #a855f7;
+}
+
+/* Font Styles */
+body.font-serif {
+    --font-family: Georgia, "Times New Roman", serif;
+}
+
+body.font-mono {
+    --font-family: "Courier New", Courier, monospace;
+}
+
+/* Font Sizes */
+body.size-small {
+    --font-size: 0.875rem;
+}
+
+body.size-large {
+    --font-size: 1.25rem;
+}
+
+/* Font Weights */
+body.weight-light {
+    --font-weight: 300;
+}
+
+body.weight-bold {
+    --font-weight: 700;
+}

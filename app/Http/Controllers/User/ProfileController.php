@@ -1,65 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\SuperAdmin;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
-    public function index(): View
-    {
-        $user = auth()->user();
-        return view('superadmin.profil.index', ['user' => $user]);
-    }
-
-    public function edit(): View
-    {
-        $user = auth()->user();
-        return view('superadmin.profil.edit', ['user' => $user]);
-    }
-
-    public function update(Request $request): \Illuminate\Http\RedirectResponse
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'bio' => 'nullable|string|max:500',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-            'cv' => 'nullable|url',
-        ]);
-
-        /** @var User $user */
-        $user = auth()->user();
-        $user->name = $validated['name'] ?? $user->name;
-        $user->bio = $validated['bio'] ?? $user->bio;
-        $user->phone = $validated['phone'] ?? $user->phone;
-        $user->address = $validated['address'] ?? $user->address;
-        $user->cv = $validated['cv'] ?? $user->cv;
-        $user->save();
-
-        return redirect()->route('superadmin.profil')->with('success', 'Profil berhasil diperbarui');
-    }
-
-    public function changePassword(Request $request): \Illuminate\Http\RedirectResponse
-    {
-        $validated = $request->validate([
-            'current_password' => 'required|current_password',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        /** @var User $user */
-        $user = auth()->user();
-        $user->password = \Illuminate\Support\Facades\Hash::make($validated['password']);
-        $user->save();
-
-        return redirect()->route('superadmin.profil')->with('success', 'Password berhasil diubah');
-    }
-
     /**
      * Upload dan simpan avatar
      */
@@ -88,7 +38,6 @@ class ProfileController extends Controller
                 // Update user avatar
                 $user->avatar = $filename;
                 $user->save();
-
                 return response()->json([
                     'success' => true,
                     'message' => 'Avatar berhasil diupload',
@@ -101,6 +50,39 @@ class ProfileController extends Controller
                 'success' => false,
                 'message' => 'File tidak ditemukan'
             ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update profil user
+     */
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . auth()->id(),
+            'phone' => 'nullable|string|max:20',
+            'bio' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            /** @var User $user */
+            $user = auth()->user();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->bio = $request->bio;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil berhasil diperbarui'
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

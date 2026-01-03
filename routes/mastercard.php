@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mastercard\MastercardController;
+use App\Http\Controllers\User\ProfileController;
 
 Route::middleware(['auth', 'role:mastercard'])->prefix('mastercard')->name('mastercard.')->group(function () {
     // Dashboard
@@ -25,6 +26,13 @@ Route::middleware(['auth', 'role:mastercard'])->prefix('mastercard')->name('mast
 
     // Profile
     Route::get('/profil', [MastercardController::class, 'profil'])->name('profil');
+
+    // Profile Upload Avatar
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::post('/upload-avatar', [ProfileController::class, 'uploadAvatar'])->name('upload-avatar');
+        Route::post('/update', [ProfileController::class, 'updateProfile'])->name('update');
+        Route::post('/delete-avatar', [ProfileController::class, 'deleteAvatar'])->name('delete-avatar');
+    });
 
     // Help
     Route::get('/bantuan', [MastercardController::class, 'bantuan'])->name('bantuan');

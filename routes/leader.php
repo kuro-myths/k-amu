@@ -5,6 +5,7 @@ use App\Http\Controllers\Leader\LeaderController;
 use App\Http\Controllers\Leader\DashboardController;
 use App\Http\Controllers\Leader\ProjectController;
 use App\Http\Controllers\Leader\NoteController;
+use App\Http\Controllers\User\ProfileController;
 
 Route::middleware(['auth', 'role:leader'])->prefix('leader')->name('leader.')->group(function () {
     // Dashboard
@@ -31,6 +32,13 @@ Route::middleware(['auth', 'role:leader'])->prefix('leader')->name('leader.')->g
 
     // Profile
     Route::get('/profil', [LeaderController::class, 'profil'])->name('profil');
+
+    // Profile Upload Avatar
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::post('/upload-avatar', [ProfileController::class, 'uploadAvatar'])->name('upload-avatar');
+        Route::post('/update', [ProfileController::class, 'updateProfile'])->name('update');
+        Route::post('/delete-avatar', [ProfileController::class, 'deleteAvatar'])->name('delete-avatar');
+    });
 
     // Help
     Route::get('/bantuan', [LeaderController::class, 'bantuan'])->name('bantuan');

@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Pet;
 use App\Models\User;
+use App\Services\PetAIServiceFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
+    protected $aiService;
+
+    public function __construct()
+    {
+        // Auto-load service berdasarkan AI_PROVIDER di .env
+        $this->aiService = PetAIServiceFactory::create();
+    }
+
     /**
      * Show pet page
      */
@@ -79,7 +88,7 @@ class PetController extends Controller
             $pet->interact();
             return response()->json([
                 'success' => true,
-                'message' => 'Kai-Myu senang diajak bermain! 💜',
+                'message' => $pet->name . ' senang diajak bermain! 💜',
                 'happiness' => $pet->happiness,
                 'energy' => $pet->energy,
                 'experience' => $pet->experience,
@@ -107,7 +116,7 @@ class PetController extends Controller
             $pet->rest();
             return response()->json([
                 'success' => true,
-                'message' => 'Kai-Myu sedang istirahat... 😴',
+                'message' => $pet->name . ' sedang istirahat... 😴',
                 'health' => $pet->health,
                 'energy' => $pet->energy,
             ]);
@@ -117,7 +126,7 @@ class PetController extends Controller
     }
 
     /**
-     * Chat dengan AI Pet
+     * Chat dengan Gemini AI Pet
      */
     public function chat(Request $request)
     {
@@ -128,23 +137,34 @@ class PetController extends Controller
         }
 
         $message = $request->input('message');
+        if (empty(trim($message))) {
+            return response()->json(['success' => false, 'message' => 'Message cannot be empty'], 400);
+        }
+
         $pet = $user->pet ?? Pet::where('user_id', $user->id)->first();
 
         if (!$pet) {
             return response()->json(['success' => false], 404);
         }
 
-        // Simple AI responses berdasarkan keyword
-        $responses = $this->getAIResponses();
+        // Use Gemini AI untuk generate response
+        $petData = [
+            'name' => $pet->name,
+            'pet_type' => $pet->pet_type,
+            'role_type' => $pet->role_type,
+            'biography' => $pet->biography,
+            'stats' => $pet->stats,
+            'level' => $pet->level,
+            'experience' => $pet->experience,
+        ];
 
-        $messageLower = strtolower($message);
-        $response = 'Hmm, pertanyaan menarik! Saya masih belajar tentang itu. Bisa coba pertanyaan lain? 😊';
+        $aiResult = $this->aiService->chatWithPet($message, $petData);
 
-        foreach ($responses as $keyword => $reply) {
-            if (strpos($messageLower, $keyword) !== false) {
-                $response = $reply;
-                break;
-            }
+        if (!$aiResult['success']) {
+            return response()->json([
+                'success' => false,
+                'response' => $aiResult['response'],
+            ], 500);
         }
 
         // Add experience setiap chat
@@ -153,29 +173,76 @@ class PetController extends Controller
 
         return response()->json([
             'success' => true,
-            'response' => $response,
+            'response' => $aiResult['response'],
             'pet' => [
                 'level' => $pet->level,
                 'experience' => $pet->experience,
                 'happiness' => $pet->happiness,
+                'health' => $pet->health,
+                'energy' => $pet->energy,
             ],
         ]);
     }
 
     /**
-     * Get AI responses
+     * Get AI Motivation
      */
-    private function getAIResponses()
+    public function getMotivation(Request $request)
     {
-        return [
-            'siapa' => 'Saya Kai-Myu, mascot virtual K-AMU! 🎀 Saya di sini untuk memberikan motivasi dan dukungan dalam perjalanan akademik Anda. Senang bertemu dengan Anda! 💜',
-            'keahlian' => 'Keahlian saya mencakup: ✨ Memberikan motivasi, 📚 Panduan akademik, 🎯 Manajemen proyek, 💬 Menjawab pertanyaan, dan 💪 Memberikan dukungan emosional!',
-            'motivasi' => 'Ingat, setiap langkah kecil adalah progres! 🌟 Anda lebih kuat daripada yang Anda pikir. Terus semangat, percaya pada diri sendiri, dan raih impian Anda! 💪 Saya ada di sini mendukung Anda!',
-            'tips' => 'Berikut tips belajar efektif: 1️⃣ Buat jadwal rutin, 2️⃣ Belajar dengan fokus tanpa gangguan, 3️⃣ Gunakan metode yang sesuai untuk Anda, 4️⃣ Istirahat cukup, 5️⃣ Praktik berkala. Anda bisa! 📚💪',
-            'halo' => 'Halo! 👋 Apa kabar? Senang bertemu dengan Anda! Ada yang bisa saya bantu? 😊',
-            'terima kasih' => 'Sama-sama! 😄 Senang bisa membantu. Jangan ragu untuk bertanya lagi kapan saja! 💜',
-            'kapan' => 'Itu tergantung dari apa yang ingin Anda capai. Saya siap membantu kapan saja Anda membutuhkan! 🌟',
-            'bagaimana' => 'Baik pertanyaan! Coba ceritakan lebih detail dan saya akan berusaha membantu sebaik mungkin! 💡',
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $pet = $user->pet ?? Pet::where('user_id', $user->id)->first();
+
+        if (!$pet) {
+            return response()->json(['success' => false], 404);
+        }
+
+        $petData = [
+            'name' => $pet->name,
+            'pet_type' => $pet->pet_type,
+            'role_type' => $pet->role_type,
         ];
+
+        $motivation = $this->aiService->generateMotivation($petData);
+
+        return response()->json([
+            'success' => true,
+            'response' => $motivation,
+        ]);
+    }
+
+    /**
+     * Get AI Learning Tip
+     */
+    public function getLearningTip(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $pet = $user->pet ?? Pet::where('user_id', $user->id)->first();
+
+        if (!$pet) {
+            return response()->json(['success' => false], 404);
+        }
+
+        $petData = [
+            'name' => $pet->name,
+            'pet_type' => $pet->pet_type,
+            'role_type' => $pet->role_type,
+        ];
+
+        $tip = $this->aiService->generateLearningTip($petData);
+
+        return response()->json([
+            'success' => true,
+            'response' => $tip,
+        ]);
     }
 }

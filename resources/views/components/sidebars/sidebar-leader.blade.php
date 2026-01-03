@@ -57,11 +57,6 @@
             </a>
         </li>
     </ul>
-
-    <!-- Sidebar Footer -->
-    <div class="sidebar-footer">
-        <p>Leader Panel</p>
-    </div>
 </aside>
 
 <!-- Sidebar Overlay (Mobile) -->

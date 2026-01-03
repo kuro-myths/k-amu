@@ -118,4 +118,10 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
     Route::put('/profil/update', [ProfileController::class, 'update'])->name('profil.update');
     Route::post('/profil/changePassword', [ProfileController::class, 'changePassword'])->name('profil.changePassword');
+
+    // Profile Upload Avatar
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::post('/upload-avatar', [ProfileController::class, 'uploadAvatar'])->name('upload-avatar');
+        Route::post('/delete-avatar', [ProfileController::class, 'deleteAvatar'])->name('delete-avatar');
+    });
 });

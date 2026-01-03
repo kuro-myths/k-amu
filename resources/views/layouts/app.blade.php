@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'K-AMU')</title>
 
     <!-- Favicon -->
@@ -21,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
 
     @yield('styles')
 </head>
@@ -86,12 +88,18 @@
     <script src="{{ asset('js/global.js') }}"></script>
     <script src="{{ asset('js/sidebar-toggle.js') }}"></script>
     <script src="{{ asset('js/footer-actions.js') }}"></script>
+    <!-- Theme Manager -->
+    <script src="{{ asset('js/theme-manager.js') }}"></script>
     <!-- Notification Badge Real-time Update -->
     @if(auth()->user()->role === 'superadmin')
     <script src="{{ asset('js/notification-badge.js') }}"></script>
     @endif
 
     @yield('scripts')
+
+    <!-- Theme & Search Modals -->
+    @include('modals.theme-modal')
+    @include('modals.search-modal')
 
     <!-- Countdown Modal -->
     <div class="modal fade" id="countdownModal" tabindex="-1" aria-labelledby="countdownModalLabel" aria-hidden="true">

@@ -11,12 +11,22 @@
         <div class="navbar-search">
             <div class="search-wrapper">
                 <i class="bi bi-search"></i>
-                <input type="text" placeholder="Cari pengguna, laporan...">
+                <input type="text" placeholder="Cari...">
             </div>
         </div>
 
         <!-- Navbar Right - User Menu -->
         <div class="navbar-right">
+            <!-- Icon Tema -->
+            <button class="navbar-icon-btn" title="Pengaturan Tema" onclick="window.showThemeModal()" style="border: none; background: transparent; cursor: pointer; padding: 0.5rem;">
+                <i class="bi bi-palette"></i>
+            </button>
+
+            <!-- Icon Pencarian -->
+            <button class="navbar-icon-btn" title="Pencarian Data" onclick="window.showSearchModal()" style="border: none; background: transparent; cursor: pointer; padding: 0.5rem;">
+                <i class="bi bi-search"></i>
+            </button>
+
             <!-- Notifications -->
             @php
             $unreadNotifications = auth()->user()->notifications()->unread()->latest()->limit(5)->get();

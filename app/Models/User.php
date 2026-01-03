@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property HasMany $testResults
  * @property HasMany $activityLogs
  * @property HasMany $notifications
+ * @property UserTheme $theme
+ * @property HasMany $searchHistories
  */
 class User extends Authenticatable
 {
@@ -69,6 +71,18 @@ class User extends Authenticatable
             'password' => 'hashed',
             'last_login_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the URL untuk avatar
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if ($this->avatar) {
+            return asset('storage/avatars/' . $this->avatar);
+        }
+        // Default avatar menggunakan UI Avatars
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=random';
     }
 
     // Relations
@@ -159,6 +173,22 @@ class User extends Authenticatable
     public function pet()
     {
         return $this->hasOne(Pet::class);
+    }
+
+    /**
+     * Get the user's theme settings.
+     */
+    public function theme()
+    {
+        return $this->hasOne(UserTheme::class);
+    }
+
+    /**
+     * Get all search histories for this user.
+     */
+    public function searchHistories(): HasMany
+    {
+        return $this->hasMany(SearchHistory::class);
     }
 
     // Helper methods for role checking

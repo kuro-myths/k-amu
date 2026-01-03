@@ -95,11 +95,6 @@
             </a>
         </li>
     </ul>
-
-    <!-- Sidebar Footer -->
-    <div class="sidebar-footer">
-        <p>Mastercard Panel</p>
-    </div>
 </aside>
 
 <!-- Sidebar Overlay (Mobile) -->

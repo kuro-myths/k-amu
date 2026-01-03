@@ -84,11 +84,6 @@
         </li>
         @endif
     </ul>
-
-    <!-- Sidebar Footer -->
-    <div class="sidebar-footer">
-        <p>User Panel</p>
-    </div>
 </aside>
 
 <!-- Sidebar Overlay (Mobile) -->

@@ -17,6 +17,16 @@
 
         <!-- Navbar Right - User Menu -->
         <div class="navbar-right">
+            <!-- Icon Tema -->
+            <button class="navbar-icon-btn" title="Pengaturan Tema" onclick="window.showThemeModal()" style="border: none; background: transparent; cursor: pointer; padding: 0.5rem;">
+                <i class="bi bi-palette"></i>
+            </button>
+
+            <!-- Icon Pencarian -->
+            <button class="navbar-icon-btn" title="Pencarian Data" onclick="window.showSearchModal()" style="border: none; background: transparent; cursor: pointer; padding: 0.5rem;">
+                <i class="bi bi-search"></i>
+            </button>
+
             <!-- Notifications -->
             <button class="navbar-icon-btn" data-bs-toggle="dropdown">
                 <i class="bi bi-bell"></i>
